@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:fontend/wiget/favorites.dart';
+import 'package:fontend/wiget/home.dart';
+import 'package:fontend/wiget/profile.dart';
+import 'package:fontend/wiget/store.dart';
+import 'package:fontend/wiget/user.dart';
 
 void main() {
-  runApp(
-      MaterialApp(
-        home: MyWiget(),
-
-      )
-
-  );
+  runApp(MyApp());
 }
 
-class MyWiget extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: GradientBackgroundWidget(),
       debugShowCheckedModeBanner: false,
-      color: Color.fromRGBO(255, 127, 36, 1),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MainScreen(),
     );
   }
 }
 
-class GradientBackgroundWidget extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   @override
-  _GradientBackgroundWidgetState createState() => _GradientBackgroundWidgetState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _GradientBackgroundWidgetState extends State<GradientBackgroundWidget> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0; // Chỉ số của tab được chọn
+
+  // Danh sách các widget cho từng tab
+  final List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(), // Chèn HomeScreen vào tab đầu tiên
+    FavoritesScreen(),
+    Profile(),
+    UserProfileScreen(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,53 +47,49 @@ class _GradientBackgroundWidgetState extends State<GradientBackgroundWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      // Mở rộng thân Scaffold lên AppBar
       appBar: AppBar(
-        title: Text('Gradient Background Example'),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent, // Làm AppBar trong suốt
+        elevation: 0, // Bỏ bóng của AppBar
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(255, 127, 36, 1), // Màu đậm bên trái dưới
-              Color.fromRGBO(255, 180, 7, 1),   // Màu nhạt ở giữa
-              Color.fromRGBO(255, 127, 36, 1),  // Màu đậm bên phải trên
-            ],
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            'Selected Index: $_selectedIndex',
-            style: TextStyle(color: Colors.white, fontSize: 24),
-          ),
-        ),
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      // Hiển thị widget dựa trên chỉ số tab
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white, // Màu nền cho BottomNavigationBar
-        selectedItemColor: Color.fromRGBO(255, 180, 7, 1),
-        unselectedItemColor: Colors.black,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: [
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(
+              Icons.home,
+              size: 35,
+            ),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Heart',
+            icon: Icon(
+              Icons.favorite,
+              size: 35,
+            ),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Market',
+            icon: Icon(
+              Icons.store,
+              size: 35,
+            ),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: 'Grid',
+            icon: Icon(
+              Icons.grid_view,
+              size: 35,
+            ),
+            label: '',
           ),
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.deepOrangeAccent,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
       ),
     );
   }
