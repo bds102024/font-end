@@ -38,70 +38,117 @@ class PropertyDetailScreen extends StatelessWidget {
     return DefaultTabController(
       length: 3, // Số lượng tabs
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: Stack(
           children: [
-            // Hiển thị ảnh với xử lý lỗi
-            Image.network(
-              imageUrl,
-              height: 300.0,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              // Nếu tải ảnh lỗi, hiển thị khung mặc định
-              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                return Container(
-                  height: 300.0,
-                  width: double.infinity,
-                  color: Colors.grey, // Màu nền khung mặc định
-                  child: Icon(
-                    Icons.broken_image,
-                    color: Colors.white,
-                    size: 50.0, // Icon hiển thị khi lỗi
+            Column(
+              children: [
+                Stack(
+                  children: [
+                    // Hiển thị ảnh chính
+                    Image.network(
+                      imageUrl,
+                      height: 300.0,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Container(
+                          height: 300.0,
+                          width: double.infinity,
+                          color: Colors.grey,
+                          child: Icon(
+                            Icons.broken_image,
+                            color: Colors.white,
+                            size: 50.0,
+                          ),
+                        );
+                      },
+                    ),
+                    // Nút quay về
+                    Positioned(
+                      top: 40,
+                      left: 10,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back,
+                            color: Colors.white, size: 30),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    // Nút tùy chọn
+                    Positioned(
+                      top: 40,
+                      right: 10,
+                      child: PopupMenuButton<String>(
+                        icon: Icon(Icons.more_vert,
+                            color: Colors.white, size: 30),
+                        onSelected: (value) {
+                          // Xử lý hành động cho nút tùy chọn
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return [
+                            PopupMenuItem(
+                              value: 'Tải ảnh hiện tại',
+                              child: Text('Tải ảnh hiện tại'),
+                            ),
+                            PopupMenuItem(
+                              value: 'Tải tất cả ảnh',
+                              child: Text('Tải tất cả ảnh'),
+                            ),
+                          ];
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                // Thông tin bất động sản phía dưới ảnh
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        address,
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Giá: $price',
+                        style: TextStyle(fontSize: 18, color: Colors.green),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Ngày đăng: $date',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-            SizedBox(height: 10),
-            // Thông tin bất động sản phía dưới ảnh
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    address,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16),
+                // TabBar để hiển thị các tabs
+                TabBar(
+                  labelColor: Colors.orangeAccent,
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: Colors.orangeAccent,
+                  tabs: [
+                    Tab(text: 'Thông tin'),
+                    Tab(text: 'Mô tả'),
+                    Tab(text: 'Liên hệ'),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      _buildScrollableInfoTab(), // Tab "Thông tin"
+                      _buildScrollableDescriptionTab(), // Tab "Mô tả"
+                      _buildContactTab(context), // Tab "Liên hệ"
+                    ],
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Ngày đăng: $date',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 16),
-            // TabBar để hiển thị các tabs
-            TabBar(
-              labelColor: Colors.orangeAccent,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.orangeAccent,
-              tabs: [
-                Tab(text: 'Thông tin'),
-                Tab(text: 'Mô tả'),
-                Tab(text: 'Liên hệ'),
+                ),
               ],
-            ),
-            SizedBox(height: 10),
-            // TabBarView để hiển thị nội dung tương ứng với từng tab
-            Expanded(
-              child: TabBarView(
-                children: [
-                  _buildScrollableInfoTab(), // Tab "Thông tin" với cuộn dọc
-                  _buildScrollableDescriptionTab(), // Tab "Mô tả" với cuộn dọc
-                  _buildContactTab(context), // Tab "Liên hệ" với cuộn dọc
-                ],
-              ),
             ),
           ],
         ),
@@ -173,6 +220,7 @@ class PropertyDetailScreen extends StatelessWidget {
       ),
     );
   }
+
 // Nội dung của tab "Liên hệ"
   Widget _buildContactTab(BuildContext context) {
     return SingleChildScrollView(
@@ -185,7 +233,8 @@ class PropertyDetailScreen extends StatelessWidget {
               // Avatar ở bên trái
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage('assets/images/avatar.jpg'), // Thay thế bằng hình ảnh đại diện thực tế
+                backgroundImage: AssetImage(
+                    'assets/images/avatar.jpg'), // Thay thế bằng hình ảnh đại diện thực tế
               ),
               SizedBox(width: 16),
               // Thông tin bên phải
@@ -268,5 +317,4 @@ class PropertyDetailScreen extends StatelessWidget {
       ),
     );
   }
-
 }

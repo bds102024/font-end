@@ -4,15 +4,6 @@ import 'package:fontend/wiget/my_color.dart';
 import 'detail.dart';
 
 class HomeScreen extends StatelessWidget {
-  Widget _createDrawerItem(
-      {IconData? icon, String? text, GestureTapCallback? onTap}) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(text!, style: TextStyle(color: Colors.white)),
-      onTap: onTap,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -8,7 +8,8 @@ class UserProfileScreen extends StatelessWidget {
       'https://via.placeholder.com/150'; // Thay thế bằng URL thực tế của ảnh đại diện
   final String coverUrl =
       'https://via.placeholder.com/600x200'; // Thay thế bằng URL ảnh bìa thực tế
-  final String userName = 'Nguyễn Văn A'; // Thay thế bằng tên người dùng thực tế
+  final String userName =
+      'Nguyễn Văn A'; // Thay thế bằng tên người dùng thực tế
 
   // Hàm tạo widget cho mỗi mục trong danh sách
   Widget _createDrawerItem({
@@ -41,11 +42,13 @@ class UserProfileScreen extends StatelessWidget {
           // Nội dung bên dưới ảnh bìa
           Column(
             children: [
-              SizedBox(height: screenHeight * 0.2), // Đẩy nội dung xuống dưới ảnh bìa
+              SizedBox(height: screenHeight * 0.2),
+              // Đẩy nội dung xuống dưới ảnh bìa
               // Ảnh đại diện chồng lên ảnh bìa
               CircleAvatar(
                 radius: 60,
-                backgroundColor: Colors.white, // Để viền màu trắng xung quanh ảnh đại diện
+                backgroundColor: Colors.white,
+                // Để viền màu trắng xung quanh ảnh đại diện
                 child: CircleAvatar(
                   radius: 55,
                   backgroundImage: NetworkImage(avatarUrl),
@@ -176,7 +179,9 @@ class UserProfileScreen extends StatelessWidget {
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => LoginScreen()), // Điều hướng đến LoginScreen
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoginScreen()), // Điều hướng đến LoginScreen
                                   );
                                 },
                                 child: Text('Đăng xuất'),
