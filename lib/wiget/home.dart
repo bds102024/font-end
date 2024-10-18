@@ -1,12 +1,154 @@
 import 'package:flutter/material.dart';
 import 'package:fontend/wiget/list_notification.dart';
 import 'package:fontend/wiget/my_color.dart';
+import 'package:fontend/wiget/setting_screen.dart';
+import '../login/wiget/login.dart';
 import 'detail.dart';
 
 class HomeScreen extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Widget _createDrawerItem(
+      {required IconData icon,
+      required String text,
+      GestureTapCallback? onTap}) {
+    return ListTile(
+      title: Row(
+        children: <Widget>[
+          Icon(icon),
+          Padding(
+            padding: EdgeInsets.only(left: 8.0),
+            child: Text(text),
+          ),
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/girl.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Hoàng Gia',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            _createDrawerItem(
+              icon: Icons.report,
+              text: 'Báo cáo hoa hồng',
+              onTap: () {
+                // Điều hướng đến Báo cáo hoa hồng
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.edit,
+              text: 'Đăng tin',
+              onTap: () {
+                // Điều hướng đến Đăng tin
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.group_add,
+              text: 'Thêm thành viên',
+              onTap: () {
+                // Điều hướng đến Thêm thành viên
+              },
+            ),
+            Divider(),
+            _createDrawerItem(
+              icon: Icons.star,
+              text: 'Khối/Phòng của tôi',
+              onTap: () {
+                // Điều hướng đến Khối/Phòng của tôi
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.assignment,
+              text: 'Tin tôi đã đăng',
+              onTap: () {
+                // Điều hướng đến Tin tôi đã đăng
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.storage,
+              text: 'Kho BĐS Hoàng Gia',
+              onTap: () {
+                // Điều hướng đến Kho BĐS Hoàng Gia
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.bookmark,
+              text: 'Tin tôi đã lưu',
+              onTap: () {
+                // Điều hướng đến Tin tôi đã lưu
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.settings,
+              text: 'Thiết lập',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
+            ),
+            _createDrawerItem(
+              icon: Icons.logout,
+              text: 'Đăng xuất',
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Đăng xuất'),
+                    content: Text('Bạn có chắc chắn muốn đăng xuất?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Hủy'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
+                        },
+                        child: Text('Đăng xuất'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,6 +162,12 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: 40),
                   Row(
                     children: [
+                      IconButton(
+                        icon: Icon(Icons.menu, color: Colors.white),
+                        onPressed: () {
+                          _scaffoldKey.currentState?.openDrawer();
+                        },
+                      ),
                       CircleAvatar(
                         radius: 30 * 1.5,
                         backgroundImage: AssetImage('assets/images/girl.jpg'),
@@ -111,36 +259,6 @@ class HomeScreen extends StatelessWidget {
         'price': '2,35 tỷ',
         'date': '27/08/2024',
       },
-      {
-        'imageUrl': 'https://picsum.photos/300',
-        'address': '383.23 Hải Phòng, Đà Nẵng',
-        'price': '2,35 tỷ',
-        'date': '27/08/2024',
-      },
-      {
-        'imageUrl': 'https://picsum.photos/300',
-        'address': '383.23 Hải Phòng, Đà Nẵng',
-        'price': '2,35 tỷ',
-        'date': '27/08/2024',
-      },
-      {
-        'imageUrl': 'https://picsum.photos/300',
-        'address': '383.23 Hải Phòng, Đà Nẵng',
-        'price': '2,35 tỷ',
-        'date': '27/08/2024',
-      },
-      {
-        'imageUrl': 'https://picsum.photos/300',
-        'address': '383.23 Hải Phòng, Đà Nẵng',
-        'price': '2,35 tỷ',
-        'date': '27/08/2024',
-      },
-      {
-        'imageUrl': 'https://picsum.photos/300',
-        'address': '383.23 Hải Phòng, Đà Nẵng',
-        'price': '2,35 tỷ',
-        'date': '27/08/2024',
-      },
     ];
 
     return items.map((item) {
@@ -186,7 +304,7 @@ class HomeScreen extends StatelessWidget {
                     return Container(
                       height: 150.0,
                       width: double.infinity,
-                      color: Colors.grey[300], // Khung mặc định khi tải ảnh lỗi
+                      color: Colors.grey[300],
                       child: Icon(Icons.broken_image,
                           size: 50, color: Colors.grey[600]),
                     );
